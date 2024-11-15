@@ -14,6 +14,8 @@ services:
     ports:
       - "5000:5000"
     restart: always
+    networks:
+      - default
     depends_on:
       - postgres
 
@@ -27,13 +29,17 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - "${DB_PORT}:5432"
+    networks:
+      - default
     volumes:
       - postgres:/var/lib/postgresql/data
 
-default:
-  driver: bridge
-  driver_opts:
-    com.docker.network.driver.mtu: 1500
-
 volumes:
   postgres:
+    name: postgres
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1500
