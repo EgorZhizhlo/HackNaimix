@@ -16,12 +16,7 @@ services:
     restart: always
     depends_on:
       - postgres
-    networks:
-    default:
-      driver: bridge
-      driver_opts:
-        com.docker.network.driver.mtu: 1500
-  
+
   postgres:
     image: postgres:latest
     restart: always
@@ -34,6 +29,11 @@ services:
       - "${DB_PORT}:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
+
+default:
+  driver: bridge
+  driver_opts:
+    com.docker.network.driver.mtu: 1500
 
 volumes:
   postgres:
