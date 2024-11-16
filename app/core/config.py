@@ -15,7 +15,10 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
+settings = Settings()
+secret_key, algorithm = settings.SECRET_KEY, settings.ALGORITHM
+
+
 def create_database_url():
-    settings = Settings()
     return (f"postgresql+asyncpg://{settings.DB_USER}:{settings.DB_PASSWORD}"
             f"@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}")

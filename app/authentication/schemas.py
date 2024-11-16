@@ -5,7 +5,6 @@ from pydantic import (
 )
 from datetime import (
     date as d,
-    time as t,
     datetime as dt,
 )
 from app.core import (
@@ -16,12 +15,12 @@ from app.core import (
 class LoginModel(BaseModel):
     email: EmailStr = Field(
         ...,
-        description='Электронная почта пользователя'
+        description='Электронная почта'
     )
     password: str = Field(
         ...,
         min_length=8,
-        description='Пароль пользователя'
+        description='Пароль'
     )
 
     @field_validator('email')
@@ -29,43 +28,40 @@ class LoginModel(BaseModel):
     def validate_phone_number(cls, values: str) -> str:
         if not re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', values):
             raise IncorrectFormatException
-        return values
+        return values.lower()
 
 
 class RegistrationModel(LoginModel):
     first_name: str = Field(
         ...,
-        description='Имя пользователя'
+        description='Имя'
     )
     last_name: str = Field(
         ...,
-        description='Фамилия пользователя'
+        description='Фамилия'
     )
-    patronymic: str = Field(
+    company: str = Field(
         ...,
-        description='Отчество пользователя'
+        description='Компания'
     )
     date_of_birth: d = Field(
         ...,
-        description='Дата рождения пользователя'
-    )
-    time_of_birth: t = Field(
-        ...,
-        description='Время рождения пользователя'
-    )
-    addres_of_birth: str = Field(
-        ...,
-        description='Место рождения(Город)'
+        description='Дата рождения'
     )
     phone_number: str = Field(
         ...,
-        description='Номер телефона пользователя'
+        description='Номер телефона'
     )
     rep_password: str = Field(
         ...,
         min_length=8,
-        description='Повтор пароля пользователя'
+        description='Повтор пароля'
     )
+
+    @field_validator('company')
+    @classmethod
+    def validate_company(cls, values: str) -> str:
+        return values.lower()
 
     @field_validator('phone_number')
     @classmethod
@@ -80,3 +76,11 @@ class RegistrationModel(LoginModel):
         if values and values >= dt.now().date():
             raise IncorrectFormatException
         return values
+
+
+class UserAuth(BaseModel):
+    message: str
+    first_name: str
+    last_name: str
+    company: str
+    email: str

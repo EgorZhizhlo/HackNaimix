@@ -24,7 +24,7 @@ TEXT_NOT_NULL_UNIQUE = Annotated[
     str, mapped_column(nullable=False, unique=True)]
 PK = Annotated[int, mapped_column(primary_key=True)]
 INTEGER_NOT_NULL = Annotated[int, mapped_column(nullable=False)]
-
+TIME_NOT_NULL = Annotated[t, mapped_column(nullable=False)]
 DATE_NOT_NULL = Annotated[d, mapped_column(nullable=False)]
 BOOLEAN_DEFAULT_FALSE = Annotated[
     bool, mapped_column(default=False)]
